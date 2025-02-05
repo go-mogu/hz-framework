@@ -1,0 +1,78 @@
+server:
+  name: hz-framework
+  port: 8080
+  defaultPageSize: 10 # 默认分页条数
+  maxPageSize: 500    # 最大分页条数
+  fileUploadPath: './' # 文件上传路径
+jwt:
+  tokenExpire: 864000   # token过期时间
+  tokenKey: 'Authorization' # token的键名
+  tokenIssuer: 'hz-framework'
+  secret: '3jQSRZXeXzr09hq0GrZuL9Dgtk2XV9Ax'
+nacos:
+  client:
+    namespaceId: dev
+    timeoutMs: 5000
+    notLoadCacheAtStart: true
+    username: nacos
+    password: nacos
+    logLevel: debug
+  server:
+    - ipAddr: 10.168.1.125
+      port: 8848
+      contextPath: /nacos
+      scheme: http
+  #      grpcPort: 9848
+  config:
+    #指定分组
+    group: test
+    type: yaml
+  discovery:
+    Weight: 1
+    enable: true
+    healthy: true
+    ephemeral: true
+    groupName: DEFAULT_GROUP
+    metadata:
+      appName: mogu-gateway
+      Gary-Version: 1.0.0
+  watch: true
+
+zap:
+  level: debug
+  format: console
+  prefix: "[go-hz]"
+  maxAge: 7
+  director: log
+  showLine: true
+  encodeLevel: LowercaseColorLevelEncoder
+  stacktraceKey: stacktrace
+  logInConsole: true
+mysql:
+  - host: 'localhost'
+    port: '3306'
+    user: 'root'
+    password: 'root'
+    dbname: 'mogu_picture'
+    prefix: ""
+    maxIdleConns: 10 # 设置空闲连接池中连接的最大数量
+    maxOpenConns: 100 # 设置打开数据库连接的最大数量
+    maxLifeTime: 60 # 设置了连接可复用的最大时间（分钟）
+    logLevel: 4 # 日志模式 1:slient 2:error 3:warn 4:info
+redis:
+  host: '127.0.0.1'
+  port: '6379'
+#  password: '111111'
+  dbNum: 0
+  loginPrefix: 'hz_framework_login_' # 登录用户存入redis键名的前缀
+amqp:
+  host: '127.0.0.1'
+  port: '5672'
+  user: 'admin'
+  password: 'mogu2018'
+  vhost: ''
+oss:
+  endPoint: 'https://oss-cn-shanghai.aliyuncs.com'
+  accessKeyId: ''
+  accessKeySecret: ''
+  bucketName: ''
