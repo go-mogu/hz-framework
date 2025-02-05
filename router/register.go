@@ -15,7 +15,7 @@ import (
 	"github.com/go-mogu/hz-framework/pkg/response"
 	"github.com/go-mogu/hz-framework/pkg/util"
 	"github.com/go-mogu/hz-framework/router/routes"
-	"github.com/go-mogu/mogu-registry/nacos"
+	"github.com/hertz-contrib/registry/nacos/v2"
 	"github.com/hertz-contrib/requestid"
 	"github.com/hertz-contrib/swagger"
 	"github.com/nacos-group/nacos-sdk-go/v2/clients"

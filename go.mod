@@ -7,17 +7,17 @@ require (
 	github.com/casbin/casbin/v2 v2.100.0
 	github.com/casbin/gorm-adapter/v3 v3.32.0
 	github.com/cloudwego/hertz v0.9.5
-	github.com/go-mogu/mogu-registry/nacos v0.0.0-20221125120126-9e4dddbd657c
 	github.com/go-sql-driver/mysql v1.7.0
 	github.com/golang-jwt/jwt/v5 v5.2.1
 	github.com/golang-migrate/migrate/v4 v4.15.2
 	github.com/google/uuid v1.6.0
 	github.com/hertz-contrib/cors v0.1.0
+	github.com/hertz-contrib/registry/nacos/v2 v2.0.0-20250120124521-8751bc5be5c3
 	github.com/hertz-contrib/requestid v1.1.0
 	github.com/hertz-contrib/swagger v0.1.0
 	github.com/jinzhu/copier v0.4.0
 	github.com/lestrrat-go/file-rotatelogs v2.4.0+incompatible
-	github.com/nacos-group/nacos-sdk-go/v2 v2.1.2
+	github.com/nacos-group/nacos-sdk-go/v2 v2.2.0
 	github.com/pkg/errors v0.9.1
 	github.com/redis/go-redis/v9 v9.6.1
 	github.com/samber/lo v1.49.1

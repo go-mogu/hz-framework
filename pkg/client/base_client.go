@@ -10,7 +10,7 @@ import (
 	"github.com/cloudwego/hertz/pkg/protocol"
 	"github.com/go-mogu/hz-framework/global"
 	utils "github.com/go-mogu/hz-framework/pkg/util/base"
-	"github.com/go-mogu/mogu-registry/nacos"
+	"github.com/hertz-contrib/registry/nacos/v2"
 	"github.com/nacos-group/nacos-sdk-go/v2/clients"
 	"github.com/nacos-group/nacos-sdk-go/v2/vo"
 	"net/http"
