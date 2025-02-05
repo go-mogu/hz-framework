@@ -80,7 +80,7 @@
 
 #### 下一步计划：
 - [ ] 支持 定时任务 cron
-- [ ] 支持 [pprof](https://github.com/gin-contrib/pprof) 性能剖析组件
+- [ ] 支持 [pprof](https://github.com/hertz-contrib/pprof) 性能剖析组件
 - [ ] 支持 trace 项目内部链路追踪
 - [ ] 支持 [rate](https://pkg.go.dev/golang.org/x/time/rate) 接口限流组件
 - [ ] 支持 [grpc](https://github.com/grpc/grpc-go) rpc组件
