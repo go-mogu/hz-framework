@@ -8,6 +8,7 @@ import (
 	"github.com/cloudwego/hertz/pkg/app/server"
 	"github.com/cloudwego/hertz/pkg/app/server/binding"
 	"github.com/cloudwego/hertz/pkg/app/server/registry"
+	"github.com/cloudwego/hertz/pkg/common/hlog"
 	"github.com/cloudwego/hertz/pkg/common/utils"
 	"github.com/go-mogu/hz-framework/global"
 	"github.com/go-mogu/hz-framework/middleware"
@@ -15,12 +16,16 @@ import (
 	"github.com/go-mogu/hz-framework/pkg/response"
 	"github.com/go-mogu/hz-framework/pkg/util"
 	"github.com/go-mogu/hz-framework/router/routes"
+	hertzlogrus "github.com/hertz-contrib/obs-opentelemetry/logging/logrus"
+	"github.com/hertz-contrib/obs-opentelemetry/provider"
+	hertztracing "github.com/hertz-contrib/obs-opentelemetry/tracing"
 	"github.com/hertz-contrib/registry/nacos/v2"
 	"github.com/hertz-contrib/requestid"
 	"github.com/hertz-contrib/swagger"
 	"github.com/nacos-group/nacos-sdk-go/v2/clients"
 	"github.com/nacos-group/nacos-sdk-go/v2/vo"
 	swaggerFiles "github.com/swaggo/files"
+	oteltrace "go.opentelemetry.io/otel/trace"
 )
 
 func Register(port string) *server.Hertz {
@@ -43,6 +48,17 @@ func Register(port string) *server.Hertz {
 	r := nacos.NewNacosRegistry(nacosCli)
 	bindConfig := binding.NewBindConfig()
 	bindConfig.LooseZeroMode = true
+	provider.NewOpenTelemetryProvider(
+		provider.WithServiceName(global.Cfg.Server.Name),
+		provider.WithExportEndpoint("localhost:4317"),
+		provider.WithInsecure(),
+	)
+	hlog.SetLogger(hertzlogrus.NewLogger())
+	hlog.SetLevel(hlog.LevelDebug)
+	tracer, cfg := hertztracing.NewServerTracer(
+		hertztracing.WithCustomResponseHandler(func(c context.Context, ctx *app.RequestContext) {
+			ctx.Header("trace-id", oteltrace.SpanFromContext(c).SpanContext().TraceID().String())
+		}))
 	h := server.New(
 		server.WithHostPorts("0.0.0.0"+":"+port),
 		server.WithBindConfig(bindConfig),
@@ -52,9 +68,11 @@ func Register(port string) *server.Hertz {
 			Weight:      1,
 			Tags:        global.Cfg.Nacos.Discovery.Metadata,
 		}),
+		tracer,
 	)
 	url := swagger.URL(fmt.Sprintf("http://localhost:%s/swagger/doc.json", port)) // The url pointing to API definition
 	h.GET("/swagger/*any", swagger.WrapHandler(swaggerFiles.Handler, url))
+	h.Use(hertztracing.ServerMiddleware(cfg))
 	// recovery
 	h.Use(recovery.Recovery(recovery.WithRecoveryHandler(response.RecoveryHandler)))
 	// cors
